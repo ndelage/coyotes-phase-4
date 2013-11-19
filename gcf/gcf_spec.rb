@@ -9,13 +9,21 @@ describe GCF do
       expect(GCF.compute(9, 3)).to eq 3
     end
 
+    it "supports any number of arguments" do
+      expect(GCF.compute(9, 27, 54)).to eq 9
+    end
+
+    it "requires at least more than one argument" do
+      expect{GCF.compute(9)}.to raise_exception(ArgumentError)
+    end
+
     it "returns nil when there are no common factors" do
       expect(GCF.compute(5, 3)).to eq nil
     end
 
     describe "guard clauses" do
       it "raises an ArgumentError when valid_arguments? returns false" do
-        GCF.should_receive(:valid_arguments?).with(nil, 3.0).and_return false
+        GCF.should_receive(:valid_arguments?).with([nil, 3.0]).and_return false
 
         expect{GCF.compute(nil, 3.0)}.to raise_exception ArgumentError
       end
@@ -23,11 +31,11 @@ describe GCF do
 
     describe "#valid_arguments?" do
       it "returns false when val_1 is not an integer" do
-        expect(GCF.valid_arguments?(3.0, 3)).to be_false
+        expect(GCF.valid_arguments?([3.0, 3])).to be_false
       end
 
       it "returns true when both arguments are integers" do
-        expect(GCF.valid_arguments?(3, 3)).to be_true
+        expect(GCF.valid_arguments?([3, 3])).to be_true
       end
     end
   end
